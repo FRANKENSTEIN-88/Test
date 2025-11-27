@@ -23,21 +23,24 @@
 
 <!-- SCRIPT TO CAPTURE UTM PARAMETERS -->
 <script>
-  function getQueryParams() {
-    const params = new URLSearchParams(window.location.search);
-    const fields = ["gclid", "utm_source", "utm_medium", "utm_campaign"];
+ function utmParameters() 
+{
+  var utmParameters = {};
+  var queryParameters = location.search.substring(1).split('&'); // value {'gclid=123abc', 'utm_source=google', 'utm_medium=cpc', 'utm_campaign=test_campaign' }
 
-    fields.forEach(field => {
-      const value = params.get(field);
-      if (value) {
-        document.getElementById(field).value = value;
-      }
-    });
+  for (var f = 0; f < queryParameters.length; f++)
+  {
+    var param = queryParameters[f].split('=');
+
+    if (param[0].startWith('utm_'))
+    {
+      utmParameters[param[0]] = decodeURIComponent(param[1]);
+    }
   }
-
-  // Run the function when the page loads
-  document.addEventListener("DOMContentLoaded", getQueryParams);
+  document.addEventListener("DOMContentLoaded", utmParameters);
+}
 </script>
 
 </body>
+
 </html>
