@@ -1,0 +1,43 @@
+<html>
+<head> </head>
+<body>
+<!-- FORM -->
+<form id="lead-form">
+  <label>First Name</label>
+  <input type="text" name="firstname" required>
+
+  <label>Last Name</label>
+  <input type="text" name="lastname" required>
+
+  <label>Email</label>
+  <input type="email" name="email" required>
+
+  <!-- Hidden UTM Fields -->
+  <input type="hidden" name="gclid" id="gclid">
+  <input type="hidden" name="utm_source" id="utm_source">
+  <input type="hidden" name="utm_medium" id="utm_medium">
+  <input type="hidden" name="utm_campaign" id="utm_campaign">
+
+  <button type="submit">Submit</button>
+</form>
+
+<!-- SCRIPT TO CAPTURE UTM PARAMETERS -->
+<script>
+  function getQueryParams() {
+    const params = new URLSearchParams(window.location.search);
+    const fields = ["gclid", "utm_source", "utm_medium", "utm_campaign"];
+
+    fields.forEach(field => {
+      const value = params.get(field);
+      if (value) {
+        document.getElementById(field).value = value;
+      }
+    });
+  }
+
+  // Run the function when the page loads
+  document.addEventListener("DOMContentLoaded", getQueryParams);
+</script>
+
+</body>
+</html>
