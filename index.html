@@ -23,24 +23,37 @@
 
 <!-- SCRIPT TO CAPTURE UTM PARAMETERS -->
 <script>
- function utmParameters() 
-{
+ function utmParameters() {
   var utmParameters = {};
-  var queryParameters = location.search.substring(1).split('&'); // value {'gclid=123abc', 'utm_source=google', 'utm_medium=cpc', 'utm_campaign=test_campaign' }
+  // Gets the query string, removes the '?', and splits by '&'
+  var queryParameters = location.search.substring(1).split('&');
 
-  for (var f = 0; f < queryParameters.length; f++)
-  {
+  for (var f = 0; f < queryParameters.length; f++) {
+    // Splits the 'key=value' pair by '='
     var param = queryParameters[f].split('=');
 
-    if (param[0].startWith('utm_'))
-    {
+    // **CORRECTED:** Using the proper 'startsWith' method
+    if (param[0].startsWith('utm_')) {
+      // Stores the parameter key and the decoded value
       utmParameters[param[0]] = decodeURIComponent(param[1]);
     }
   }
-  document.addEventListener("DOMContentLoaded", utmParameters);
+
+  // Returns the final object containing only UTM parameters
+  return utmParameters;
 }
+
+// **USAGE EXAMPLE (What you would do outside the function):**
+// 1. You would call the function to get the parameters.
+// const myUtms = utmParameters();
+// 2. If you needed to run this function after the document loads, you'd call it like this:
+// document.addEventListener("DOMContentLoaded", function() {
+//     const utm_data = utmParameters();
+//     console.log(utm_data);
+// });
 </script>
 
 </body>
 
 </html>
+
