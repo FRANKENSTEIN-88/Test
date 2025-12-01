@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>link2</title>
+    <style>
+        nav {
+  border-bottom: 1px solid black;
+}
+
+.crumbs ol {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.crumb {
+  display: inline-block;
+}
+
+.crumb a::after {
+  display: inline-block;
+  color: black;
+  content: ">";
+  font-size: 80%;
+  font-weight: bold;
+  padding: 0 3px;
+}
+
+    </style>
+</head>
+<body>
+    <nav class="crumbs">
+        <ol>
+          <li class="crumb"><a href="link1.html">test link1</a></li>
+          <li class="crumb"><a href="link2.html">test link2</a></li>
+          <li class="crumb"><a href="index.html">Form</a></li>
+          
+        </ol>
+      </nav>
+      
+      <h1>Link 2</h1>
+      <p>please see the utm paramters on the url each link!</p>
+      <script>
+        function getQueryParams() 
+        {
+            const params = new URLSearchParams(window.location.search);
+            const fields = ["gclid","utm_source","utm_medium","utm_campaign"];
+            const formFields1 = ["gclid","utm_source","utm_medium","utm_campaign"];
+            const formFields2 = ["gclid-1","utm_source-1","utm_medium-1","utm_campaign-1"];
+    
+            fields.forEach((field, index1) => { 
+                const value = params.get(field);
+                if (value)
+                {
+                    const input1 = document.getElementById(formFields1[index1]);
+                    if(input1) input1.value = value;
+    
+                    const input2 = document.getElementById(formFields2[index1]);
+                    if(input2) input2.value = value;
+                }
+            });
+    
+            return params;
+        }
+    
+        function keepUTMonNav(params) 
+        {
+            const utmParams = ["gclid","utm_source","utm_medium","utm_campaign"];
+            let uTM = '';
+    
+            utmParams.forEach(param => {
+                const value = params.get(param); 
+                if(value) 
+                {
+                    uTM += (uTM ? '&' : '?') + param + "=" + encodeURIComponent(value);
+                }
+            });
+    
+            if (!uTM) return;
+    
+            document.querySelectorAll('a').forEach(link => {
+                if(link.hostname === window.location.hostname) 
+                {
+                    if(link.href.includes('?')) 
+                    {
+                        link.href += '&' + uTM.substring(1);
+                    }
+                    else
+                    {
+                        link.href += uTM;
+                    }
+                }
+            });
+        }
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = getQueryParams();
+            keepUTMonNav(params);
+        });
+    </script>
+</body>
+</html>
